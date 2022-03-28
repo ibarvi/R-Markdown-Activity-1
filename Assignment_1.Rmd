@@ -1,0 +1,47 @@
+---
+title: "ANA 515 Assignment 1"
+author: "Iryna Barvi"
+date: "3/27/2022"
+output:
+  word_document: default
+  theme:
+    bootswatch: spacelab
+  html_document: null
+---
+
+```{r setup, include = FALSE}
+library(tidyverse)
+library(knitr)
+library(bslib)
+```
+
+```{r, echo = FALSE}
+url = 'https://raw.githubusercontent.com/fivethirtyeight/guns-data/master/full_data.csv'
+guns_data = read.csv(url)
+```
+
+```{r, include = FALSE}
+youth = guns_data %>% 
+  filter(age <= 65)
+```
+
+```{r, include = FALSE}
+summary(youth)
+```
+
+We have data about `r nrow(guns_data)` individuals killed by guns. Only `r nrow(guns_data) - nrow(youth)` are older than 65. The distribution of the remainder is shown below: 
+
+```{r youth-dist, echo = FALSE} 
+youth %>% 
+ggplot(aes(age)) + 
+geom_freqpoly(binwidth = 1) 
+```
+
+
+
+```{r race-dist, echo = FALSE} 
+youth %>% 
+ggplot(aes(fct_infreq(race) %>% fct_rev())) + 
+geom_bar() + coord_flip() + 
+labs(x = "Victim race") 
+```
